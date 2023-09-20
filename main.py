@@ -16,8 +16,31 @@ def create_cook_book(text):
         cook_book[name] = ingredients
     return cook_book
 
+def create_products(dishes, person_count, cook_book):
+    products = {}
+    for dish in dishes:
+        if dish in cook_book:
+            for ingredient in cook_book[dish]:
+                ingredient_name = ingredient['ingredient_name']
+                quantity = ingredient['quantity'] * person_count
+                measure = ingredient['measure']
+                if ingredient_name in products:
+                    products[ingredient_name]['quantity'] += quantity
+                else:
+                    products[ingredient_name] = {'quantity': quantity, 'measure': measure}
+        else:
+            print(f'Не найдено блюдо: {dish}')
+    return products
+
+
 with open("recipes.txt", encoding="utf-8") as f:
     text = f.read()
+
+cook_book = create_cook_book(text)
+dishes = ['Омлет', 'Фахитос']
+person_count = 2
+print(create_products(dishes, person_count, cook_book))
+
 
 
 
